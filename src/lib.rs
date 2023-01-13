@@ -7,11 +7,13 @@ use embedded_hal::blocking::i2c;
 use packed_struct::{PackedStruct, PackingError};
 use registers::*;
 
+#[derive(Debug)]
 pub struct INA3221<I> {
     i2c: I,
     address: u8,
 }
 
+#[derive(Debug)]
 pub enum Error<E> {
     I2C(E),
     RegisterUnpacking(PackingError),
