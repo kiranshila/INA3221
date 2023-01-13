@@ -76,7 +76,7 @@ pub enum Mode {
 #[derive(PackedStruct)]
 #[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
 pub struct ManufacturerId {
-    #[packed_field(bits = "0..=15", endian = "lsb")]
+    #[packed_field(bits = "0..=15", endian = "msb")]
     pub(crate) id: u16,
 }
 
@@ -85,7 +85,7 @@ reg_addr!(ManufacturerId, 0xFE);
 #[derive(PackedStruct)]
 #[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
 pub struct DieId {
-    #[packed_field(bits = "0..=15", endian = "lsb")]
+    #[packed_field(bits = "0..=15", endian = "msb")]
     pub(crate) id: u16,
 }
 
