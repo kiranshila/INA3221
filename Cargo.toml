@@ -1,0 +1,16 @@
+[package]
+name = "ina3221"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["Kiran Shila <me@kiranshila.com>"]
+description = "Platform-agnostic Rust driver for the INA3221  Triple-Channel, High-Side Measurement, Shunt and Bus Voltage Monitor"
+keywords = ["no-std", "embedded-hal-driver", "voltage", "power-monitor"]
+categories = ["embedded", "hardware-support", "no-std"]
+repository = "https://github.com/kiranshila/ina3221"
+readme = "README.md"
+documentation = "https://docs.rs/crate/ina3221/"
+
+[dependencies]
+embedded-hal = "0.2"
+packed_struct = {version = "0.10", default-features = false}
