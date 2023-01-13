@@ -164,6 +164,20 @@ where
         Ok(())
     }
 
+    /// Gets the current averaging configuration
+    pub fn get_averaging(&mut self) -> Result<Averages, Error<E>> {
+        let config: Configuration = self.read_reg()?;
+        Ok(config.avg)
+    }
+
+    /// Sets the averaging configuration
+    pub fn set_averaging(&mut self, avgs: Averages) -> Result<(), Error<E>> {
+        let mut config: Configuration = self.read_reg()?;
+        config.avg = avgs;
+        self.write_reg(config)?;
+        Ok(())
+    }
+
     /// Gets the shunt voltage of a given channel
     pub fn shunt_voltage(&mut self, channel: Channel) -> Result<f32, Error<E>> {
         Ok(match channel {
