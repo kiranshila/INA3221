@@ -1,5 +1,19 @@
 use packed_struct::prelude::*;
 
+pub trait Address {
+    fn addr() -> u8;
+}
+
+macro_rules! reg_addr {
+    ($reg:ident,$addr:literal) => {
+        impl Address for $reg {
+            fn addr() -> u8 {
+                $addr
+            }
+        }
+    };
+}
+
 #[derive(PackedStruct)]
 #[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
 pub struct Configuration {
@@ -16,6 +30,8 @@ pub struct Configuration {
     #[packed_field(bits = "0..=2", ty = "enum")]
     mode: Mode,
 }
+
+reg_addr!(Configuration, 0x00);
 
 #[derive(Default, PrimitiveEnum, Copy, Clone, Debug)]
 /// Averaging mode. This sets the number of samples that are collected and averaged.
@@ -44,6 +60,7 @@ pub enum ConversionTime {
     _4_1566 = 6,
     _8_244 = 7,
 }
+
 #[derive(Default, PrimitiveEnum, Copy, Clone, Debug)]
 pub enum Mode {
     PowerDown = 0,
@@ -55,3 +72,21 @@ pub enum Mode {
     #[default]
     ShutBusCont = 7,
 }
+
+#[derive(PackedStruct)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct ManufacturerId {
+    #[packed_field(bits = "0..=15", endian = "lsb")]
+    pub(crate) id: u16,
+}
+
+reg_addr!(ManufacturerId, 0xFE);
+
+#[derive(PackedStruct)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct DieId {
+    #[packed_field(bits = "0..=15", endian = "lsb")]
+    pub(crate) id: u16,
+}
+
+reg_addr!(DieId, 0xFF);
