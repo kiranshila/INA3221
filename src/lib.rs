@@ -47,9 +47,12 @@ where
         }
     }
 
+    /// Read `N` bytes from device at addr pointer `addr`
     fn read<const N: usize>(&mut self, addr: u8) -> Result<[u8; N], Error<E>> {
         let mut buf = [0u8; N];
-        self.i2c.read(addr, &mut buf).map_err(|e| Error::I2C(e))?;
+        self.i2c
+            .write_read(self.address, &[addr], &mut buf)
+            .map_err(|e| Error::I2C(e))?;
         Ok(buf)
     }
 
