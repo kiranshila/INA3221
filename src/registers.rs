@@ -14,21 +14,25 @@ macro_rules! reg_addr {
     };
 }
 
-#[derive(PackedStruct)]
+#[derive(PackedStruct, Default, Debug)]
 #[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
 pub struct Configuration {
     #[packed_field(bits = "15")]
-    rst: bool,
-    #[packed_field(bits = "12..=14")]
-    enable: [bool; 3],
+    pub(crate) rst: bool,
+    #[packed_field(bits = "14")]
+    pub(crate) enable_ch1: bool,
+    #[packed_field(bits = "13")]
+    pub(crate) enable_ch2: bool,
+    #[packed_field(bits = "12")]
+    pub(crate) enable_ch3: bool,
     #[packed_field(bits = "9..=11", ty = "enum")]
-    avg: Averages,
+    pub(crate) avg: Averages,
     #[packed_field(bits = "6..=8", ty = "enum")]
-    vbus_ct: ConversionTime,
+    pub(crate) vbus_ct: ConversionTime,
     #[packed_field(bits = "3..=5", ty = "enum")]
-    vsh_ct: ConversionTime,
+    pub(crate) vsh_ct: ConversionTime,
     #[packed_field(bits = "0..=2", ty = "enum")]
-    mode: Mode,
+    pub(crate) mode: Mode,
 }
 
 reg_addr!(Configuration, 0x00);
@@ -73,7 +77,61 @@ pub enum Mode {
     ShutBusCont = 7,
 }
 
-#[derive(PackedStruct)]
+#[derive(PackedStruct, Debug)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct Ch1ShuntVoltage {
+    #[packed_field(bits = "3..=15", endian = "msb")]
+    pub(crate) voltage: i16,
+}
+
+reg_addr!(Ch1ShuntVoltage, 0x01);
+
+#[derive(PackedStruct, Debug)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct Ch1BusVoltage {
+    #[packed_field(bits = "3..=15", endian = "msb")]
+    pub(crate) voltage: i16,
+}
+
+reg_addr!(Ch1BusVoltage, 0x02);
+
+#[derive(PackedStruct, Debug)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct Ch2ShuntVoltage {
+    #[packed_field(bits = "3..=15", endian = "msb")]
+    pub(crate) voltage: i16,
+}
+
+reg_addr!(Ch2ShuntVoltage, 0x03);
+
+#[derive(PackedStruct, Debug)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct Ch2BusVoltage {
+    #[packed_field(bits = "3..=15", endian = "msb")]
+    pub(crate) voltage: i16,
+}
+
+reg_addr!(Ch2BusVoltage, 0x04);
+
+#[derive(PackedStruct, Debug)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct Ch3ShuntVoltage {
+    #[packed_field(bits = "3..=15", endian = "msb")]
+    pub(crate) voltage: i16,
+}
+
+reg_addr!(Ch3ShuntVoltage, 0x05);
+
+#[derive(PackedStruct, Debug)]
+#[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
+pub struct Ch3BusVoltage {
+    #[packed_field(bits = "3..=15", endian = "msb")]
+    pub(crate) voltage: i16,
+}
+
+reg_addr!(Ch3BusVoltage, 0x06);
+
+#[derive(PackedStruct, Debug)]
 #[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
 pub struct ManufacturerId {
     #[packed_field(bits = "0..=15", endian = "msb")]
@@ -82,7 +140,7 @@ pub struct ManufacturerId {
 
 reg_addr!(ManufacturerId, 0xFE);
 
-#[derive(PackedStruct)]
+#[derive(PackedStruct, Debug)]
 #[packed_struct(bit_numbering = "lsb0", size_bytes = "2")]
 pub struct DieId {
     #[packed_field(bits = "0..=15", endian = "msb")]
